@@ -1,0 +1,17 @@
+{
+    "name": "benjosiah/php-mvc_framework",
+    "authors": [
+        {
+            "name": "josiah",
+            "email": "benjosiah90@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "app\\":"./"
+        }
+    },
+    "require": {
+      "ext-pdo": "*"
+    }
+}
