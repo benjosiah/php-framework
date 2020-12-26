@@ -40,7 +40,7 @@ class SiteController extends Controller
              "body"=> ['required', 'min'=>10, 'max'=>260]
             ]);
 
-           var_dump($this->auth()->make('users', $form));
+//           var_dump($this->auth()->make('users', $form));
 
     }
     public function register(Request $request){

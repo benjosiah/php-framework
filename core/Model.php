@@ -8,6 +8,8 @@ namespace app\core;
 
 
 
+use PDOException;
+
 class Model
 {
     public function add($datas, $table){
@@ -17,15 +19,19 @@ class Model
             $column[]=$key;
             $data[":$key"]=$value;
         }
+        try {
+            $params= array_map(fn($atr)=> ":$atr", $column);
+            $statement="INSERT INTO $table (".implode(',',$column).")VALUES(".implode(",",$params).")";
+            $query= self::prepare($statement);
+            foreach ($data as $key => $value){
+                $query->bindValue($key, $value);
+            }
+            $query->execute();
+            return true;
+        }catch (PDOException $exception){
 
-        $params= array_map(fn($atr)=> ":$atr", $column);
-        $statement="INSERT INTO $table (".implode(',',$column).")VALUES(".implode(",",$params).")";
-        $query= self::prepare($statement);
-        foreach ($data as $key => $value){
-            $query->bindValue($key, $value);
         }
-        $query->execute();
-        return true;
+
 
     }
 

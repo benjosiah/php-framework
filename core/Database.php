@@ -4,19 +4,31 @@
 namespace app\core;
 
 use PDO;
+use PDOException;
 
 class Database
 {
     public  PDO $pdo;
+    private Router $router;
 
     public function __construct()
     {
+//        $this->router = new \app\core\Router();
         $dsn='mysql:host=localhost;dbname=mvc_framework';
-        $usernme='root';
+        $username='root';
         $password='';
-        $this->pdo= new PDO($dsn, $usernme, $password);
-        $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        try {
+            $this->pdo= new PDO($dsn, $username, $password);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        }catch (PDOException $exception){
+            echo Application::$app->router->renderView("_error", [
+                'exception'=>$exception
+            ]);
+            exit();
+        }
+
     }
+
 
     function applyMigration(){
         $newMigrations=[];

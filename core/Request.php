@@ -64,12 +64,20 @@ class Request
     }
 
     public function isUnique($table, $uniqueAtr, $value){
-        $sql="SELECT * FROM $table WHERE $uniqueAtr = :$uniqueAtr ";
-        $statement= Application::$app->db->pdo->prepare($sql);
-        $statement->bindValue(":$uniqueAtr", $value);
-        $statement->execute();
+        try {
+            $sql="SELECT * FROM $table WHERE $uniqueAtr = :$uniqueAtr ";
+            $statement= Application::$app->db->pdo->prepare($sql);
+            $statement->bindValue(":$uniqueAtr", $value);
+            $statement->execute();
 
-       return $statement->fetchObject();
+            return $statement->fetchObject();
+        }catch (\PDOException $exception){
+            echo Application::$app->router->renderView("_error", [
+                'exception'=>$exception
+            ]);
+            exit();
+        }
+
     }
 
     public  function validate(array $form, array $data=[]){
