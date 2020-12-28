@@ -11,12 +11,12 @@ class Database
     public  PDO $pdo;
     private Router $router;
 
-    public function __construct()
+    public function __construct(array $db)
     {
 //        $this->router = new \app\core\Router();
-        $dsn='mysql:host=localhost;dbname=mvc_framework';
-        $username='root';
-        $password='';
+        $dsn='mysql:host='.$db['host'].';dbname='.$db['dbname'];
+        $username=$db['username'];
+        $password=$db['password'];
         try {
             $this->pdo= new PDO($dsn, $username, $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
